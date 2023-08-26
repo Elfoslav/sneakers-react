@@ -17,7 +17,6 @@ function SneakersFormModal() {
 
   return (
     <div className="sneakers-form-moda">
-      <button onClick={open}>Open Form Modal</button>
       <Modal
         isOpen={isFormModalOpened}
         onClose={close}

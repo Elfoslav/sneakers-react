@@ -3,6 +3,8 @@ import { useDeleteSneaker } from '../../services/SneakersService';
 import Sneaker from '../../models/Sneaker';
 
 interface SneakerContextType {
+  searchText: string;
+  updateSearchText: (query: string) => void;
   isFormModalOpened: boolean;
   openFormModal: () => void;
   closeFormModal: () => void;
@@ -26,10 +28,15 @@ export const useSneakerContext = () => {
 };
 
 export const SneakerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [searchText, setSearchText] = useState<string>('');
   const [isFormModalOpened, setIsFormModalOpened] = useState<boolean>(false);
   const [isDeleteModalOpened, setIsDeleteModalOpened] = useState<boolean>(false);
   const [selectedSneaker, setSelectedSneaker] = useState<Sneaker | null>(null);
   const deleteSneakerMutation = useDeleteSneaker();
+
+  const updateSearchText = (query: string) => {
+    setSearchText(() => query);
+  }
 
   const openFormModal = () => {
     setIsFormModalOpened(true);
@@ -61,6 +68,8 @@ export const SneakerProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   return (
     <SneakerContext.Provider value={{
+      searchText,
+      updateSearchText,
       isFormModalOpened,
       openFormModal,
       closeFormModal,

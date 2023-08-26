@@ -5,8 +5,8 @@ import  './SneakersList.scss';
 import Sneaker from '../../models/Sneaker';
 
 function SneakersList() {
-  const { data, isLoading, isError } = useGetSneakers();
-  const { selectSneaker, openFormModal, openDeleteModal } = useSneakerContext();
+  const { searchText, selectSneaker, openFormModal, openDeleteModal } = useSneakerContext();
+  const { data, isLoading, isError } = useGetSneakers(searchText);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -58,7 +58,13 @@ function SneakersList() {
             </div>
           ))
         ) : (
-          <div>No sneakers available.</div>
+          <div className="flex flex-column justify-content-center mx-auto">
+            <img src="/images/sneakers-search.svg" width={400} alt="sneakers empty search" />
+            <div className="text-center mt-30">
+              <p>Search better.</p>
+              <p>There is nothing like this in your collection.</p>
+            </div>
+          </div>
         )}
       </div>
   );

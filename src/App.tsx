@@ -5,6 +5,7 @@ import SneakersList from "./components/sneakers/SneakersList";
 import { SneakerProvider } from './components/sneakers/SneakerContext';
 import SneakersFormModal from "./components/sneakers/SneakersFormModal";
 import SneakersDeleteModal from "./components/sneakers/SneakersDeleteModal";
+import SneakersHeader from "./components/sneakers/SneakersHeader";
 
 const queryClient = new QueryClient();
 
@@ -13,6 +14,7 @@ function App() {
     <div className="container">
       <QueryClientProvider client={queryClient}>
         <SneakerProvider>
+          <SneakersHeader />
           <SneakersList />
 
           <SneakersFormModal />

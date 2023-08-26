@@ -39,11 +39,17 @@ const data: Sneaker[] = [
   },
 ];
 
-export const getSneakers = async (): Promise<Sneaker[]> => {
+export const getSneakers = async (query: string = ''): Promise<Sneaker[]> => {
   // const response = await axios.get<Sneaker[]>(API_URL);
   // return response.data;
-  console.log('getSneakers: ', data);
-  return Promise.resolve(data);
+  console.log('getSneakers: ', data, query);
+  let filteredSneakers = data;
+
+  if (query) {
+    filteredSneakers = data.filter(sneaker => sneaker.name.toLowerCase().includes(query.toLowerCase()));
+  }
+
+  return Promise.resolve(filteredSneakers);
 };
 
 export const createSneaker = async (newSneaker: Sneaker): Promise<void> => {
@@ -67,9 +73,9 @@ export const deleteSneaker = async (sneakerId: string): Promise<void> => {
   }
 };
 
-export const useGetSneakers = () => {
-  console.log('useGetSneakers: ', data);
-  return useQuery<Sneaker[]>('sneakers', getSneakers);
+export const useGetSneakers = (searchQuery: string = '') => {
+  console.log('useGetSneakers: ', data, searchQuery);
+  return useQuery<Sneaker[], unknown>(['sneakers', searchQuery], () => getSneakers(searchQuery));
 };
 
 export const useCreateSneaker = () => {
