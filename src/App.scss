@@ -1,0 +1,33 @@
+@import './styles/fonts.scss';
+
+body {
+  background-color: #EEEFF0;
+  font-family: 'Excon-Regular';
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+/* Heading styles */
+h1, h2 {
+  font-family: 'Boxing-Regular';
+}
+
+.boxing-regular-font {
+  font-family: 'Boxing-Regular';
+}
+
+.bold {
+  font-family: 'Excon-Bold';
+}
+
+/* Flex styles */
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
