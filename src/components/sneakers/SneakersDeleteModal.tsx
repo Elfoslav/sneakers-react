@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSneakerContext } from './SneakerContext';
-import SneakersForm from './SneakersForm';
 import ConfirmDeleteModal from '../ConfirmDeleteModal';
 
 function SneakersFormModal() {
@@ -16,7 +15,10 @@ function SneakersFormModal() {
 
   const close = () => {
     closeDeleteModal();
-    unselectSneaker();
+    // Wait for modal animation
+    setTimeout(() => {
+      unselectSneaker();
+    }, 300);
   };
 
   const onDelete = () => {

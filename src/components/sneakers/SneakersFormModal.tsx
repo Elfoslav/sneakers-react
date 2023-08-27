@@ -4,7 +4,9 @@ import { useSneakerContext } from './SneakerContext';
 import SneakersForm from './SneakersForm';
 
 function SneakersFormModal() {
-  const { isFormModalOpened, closeFormModal, unselectSneaker } = useSneakerContext();
+  const { isFormModalOpened, closeFormModal, selectedSneaker, unselectSneaker } = useSneakerContext();
+
+  const headerText = selectedSneaker?.name || 'Add sneakers to your collection';
 
   const close = () => {
     closeFormModal();
@@ -12,15 +14,13 @@ function SneakersFormModal() {
   };
 
   return (
-    <div className="sneakers-form-moda">
-      <Modal
-        isOpen={isFormModalOpened}
-        onClose={close}
-        headerText="Add sneakers to your collection"
-      >
-        <SneakersForm onSubmit={close} />
-      </Modal>
-    </div>
+    <Modal
+      isOpen={isFormModalOpened}
+      onClose={close}
+      headerText={headerText}
+    >
+      <SneakersForm onSubmit={close} />
+    </Modal>
   );
 }
 
