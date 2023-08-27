@@ -23,25 +23,32 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
     reset,
     setValue,
     formState: { errors },
-  } = useForm<FormValues>({
-    defaultValues: {
-      name: selectedSneaker?.name || '',
-      brand: selectedSneaker?.brand || '',
-      price: selectedSneaker?.price || 0,
-      size: selectedSneaker?.size || 0,
-      year: selectedSneaker?.year || 0,
-    }
-  });
+  } = useForm<FormValues>();
 
   useEffect(() => {
     if (selectedSneaker) {
       setValue('name', selectedSneaker.name || '');
       setValue('brand', selectedSneaker.brand || '');
-      setValue('price', selectedSneaker.price || 0);
-      setValue('size', selectedSneaker.size || 0);
-      setValue('year', selectedSneaker.year || 0);
+      setValue('price', selectedSneaker.price || NaN);
+      setValue('size', selectedSneaker.size || NaN);
+      setValue('year', selectedSneaker.year || NaN);
+    } else {
+      setValue('name', '');
+      setValue('brand', '');
+      setValue('price', NaN);
+      setValue('size', NaN);
+      setValue('year', NaN);
     }
   }, [selectedSneaker, setValue]);
+
+  const isNotEmptyNumber = (value: number) => {
+    return value > 0;
+  };
+
+  const isValidYear = (value: number) => {
+    const currentYear = new Date().getFullYear();
+    return value >= 1900 && value <= currentYear;
+  };
 
   const localSubmit: SubmitHandler<FormValues> = async (formData) => {
     const newSneaker: Sneaker = {
@@ -93,7 +100,12 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         <input
           type="number"
           id="price"
-          {...register('price', { required: 'Price is required' })}
+          {...register('price', {
+            required: 'Price is required',
+            validate: {
+              isNotEmptyNumber: value => isNotEmptyNumber(value) || 'Price must be a positive number'
+            }
+          })}
         />
         {errors.price && <div className="error">{errors.price.message}</div>}
       </div>
@@ -102,7 +114,13 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         <input
           type="number"
           id="size"
-          {...register('size', { required: 'Size is required' })}
+          defaultValue={selectedSneaker ? selectedSneaker.size : ''}
+          {...register('size', {
+            required: 'Size is required',
+            validate: {
+              isNotEmptyNumber: value => isNotEmptyNumber(value) || 'Size must be a positive number'
+            }
+          })}
         />
         {errors.size && <div className="error">{errors.size.message}</div>}
       </div>
@@ -111,7 +129,13 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         <input
           type="number"
           id="year"
-          {...register('year', { required: 'Year is required' })}
+          defaultValue={selectedSneaker ? selectedSneaker.year : ''}
+          {...register('year', {
+            required: 'Year is required',
+            validate: {
+              isValidYear: value => isValidYear(value) || 'Please enter a valid year between 1900 and the current year'
+            }
+          })}
         />
         {errors.year && <div className="error">{errors.year.message}</div>}
       </div>
