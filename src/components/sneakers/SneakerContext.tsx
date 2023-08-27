@@ -17,6 +17,8 @@ interface SneakerContextType {
   deleteSneaker: (sneaker: Sneaker) => void;
   filterName: string;
   updateFilterName: (filter: string) => void;
+  sneakersCount: number;
+  updateSneakersCount: (count: number) => void;
 }
 
 const SneakerContext = createContext<SneakerContextType | undefined>(undefined);
@@ -35,6 +37,7 @@ export const SneakerProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [isFormModalOpened, setIsFormModalOpened] = useState<boolean>(false);
   const [isDeleteModalOpened, setIsDeleteModalOpened] = useState<boolean>(false);
   const [selectedSneaker, setSelectedSneaker] = useState<Sneaker | null>(null);
+  const [sneakersCount, setSneakersCount] = useState<number>(0);
   const deleteSneakerMutation = useDeleteSneaker();
 
   const updateSearchText = (query: string) => {
@@ -59,7 +62,7 @@ export const SneakerProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const selectSneaker = (sneaker: Sneaker) => {
     setSelectedSneaker(sneaker);
-  };
+  }
 
   const unselectSneaker = () => {
     setSelectedSneaker(null);
@@ -71,6 +74,10 @@ export const SneakerProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const updateFilterName = (filter: string) => {
     setFilterName(filter);
+  }
+
+  const updateSneakersCount = (count: number) => {
+    setSneakersCount(count);
   }
 
   return (
@@ -89,6 +96,8 @@ export const SneakerProvider: React.FC<{ children: ReactNode }> = ({ children })
       deleteSneaker,
       filterName,
       updateFilterName,
+      sneakersCount,
+      updateSneakersCount,
     }}>
       {children}
     </SneakerContext.Provider>

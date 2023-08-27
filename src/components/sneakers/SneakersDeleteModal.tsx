@@ -4,7 +4,15 @@ import SneakersForm from './SneakersForm';
 import ConfirmDeleteModal from '../ConfirmDeleteModal';
 
 function SneakersFormModal() {
-  const { isDeleteModalOpened, closeDeleteModal, unselectSneaker, selectedSneaker, deleteSneaker } = useSneakerContext();
+  const {
+    isDeleteModalOpened,
+    closeDeleteModal,
+    unselectSneaker,
+    selectedSneaker,
+    deleteSneaker,
+    sneakersCount,
+    updateSneakersCount,
+  } = useSneakerContext();
 
   const close = () => {
     closeDeleteModal();
@@ -14,6 +22,7 @@ function SneakersFormModal() {
   const onDelete = () => {
     if (selectedSneaker) {
       deleteSneaker(selectedSneaker);
+      updateSneakersCount(sneakersCount - 1);
       close();
     }
   }

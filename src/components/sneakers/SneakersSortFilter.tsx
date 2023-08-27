@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSneakerContext } from './SneakerContext';
 import Button from '../Button';
 import './SneakersHeader.scss';
@@ -9,7 +9,7 @@ interface SneakersSortFilterProps {
 }
 
 const SneakersSortFilter: React.FC<SneakersSortFilterProps> = ({ className }) => {
-  const { filterName, updateFilterName } = useSneakerContext();
+  const { filterName, updateFilterName, sneakersCount, searchText } = useSneakerContext();
 
   const getClass = () => {
     let str = 'sneakers-filter flex gap-10 flex-center flex-right';
@@ -18,7 +18,7 @@ const SneakersSortFilter: React.FC<SneakersSortFilterProps> = ({ className }) =>
       str += ` ${className}`;
     }
 
-    return str;
+    return str +  `${sneakersCount === 0 ? ' visibility-hidden' : ''}`;
   }
 
   return (

@@ -5,40 +5,41 @@ import { FILTERS } from '../lib/consts';
 
 const API_URL = 'https://crudcrud.com/api/1a35ec1ba4f84eabb9866ce5cfd8b9e4/sneakers';
 
-const data: Sneaker[] = [
-  {
-    id: '1',
-    name: 'Air Jordan',
-    brand: 'Nike',
-    price: 250,
-    size: 10,
-    year: 2021,
-  },
-  {
-    id: '2',
-    name: 'Superstar',
-    brand: 'Adidas',
-    price: 120,
-    size: 9,
-    year: 2020,
-  },
-  {
-    id: '3',
-    name: 'Chuck Taylor',
-    brand: 'Converse',
-    price: 80,
-    size: 8,
-    year: 2022,
-  },
-  {
-    id: '4',
-    name: 'Classic Leather',
-    brand: 'Reebok',
-    price: 90,
-    size: 11,
-    year: 2021,
-  },
-];
+// const data: Sneaker[] = [
+//   {
+//     id: '1',
+//     name: 'Air Jordan',
+//     brand: 'Nike',
+//     price: 250,
+//     size: 10,
+//     year: 2021,
+//   },
+//   {
+//     id: '2',
+//     name: 'Superstar',
+//     brand: 'Adidas',
+//     price: 120,
+//     size: 9,
+//     year: 2020,
+//   },
+//   {
+//     id: '3',
+//     name: 'Chuck Taylor',
+//     brand: 'Converse',
+//     price: 80,
+//     size: 8,
+//     year: 2022,
+//   },
+//   {
+//     id: '4',
+//     name: 'Classic Leather',
+//     brand: 'Reebok',
+//     price: 90,
+//     size: 11,
+//     year: 2021,
+//   },
+// ];
+const data: Sneaker[] = [];
 
 export const getSneakers = async (query: string = '', filterName: string = ''): Promise<Sneaker[]> => {
   // const response = await axios.get<Sneaker[]>(API_URL);
@@ -61,8 +62,6 @@ export const getSneakers = async (query: string = '', filterName: string = ''): 
   if (filterName === FILTERS.CHEAPEST) {
     filteredSneakers = filteredSneakers.sort((a, b) => a.price - b.price);
   }
-
-  console.log(filteredSneakers)
 
   return Promise.resolve(filteredSneakers);
 };
@@ -89,8 +88,8 @@ export const deleteSneaker = async (sneakerId: string): Promise<void> => {
 };
 
 export const useGetSneakers = (searchQuery: string = '', filterName: string = '') => {
-  console.log('useGetSneakers: ', data, searchQuery, filterName);
-  return useQuery<Sneaker[], unknown>(['sneakers', searchQuery, filterName], () => getSneakers(searchQuery, filterName));
+  const result = useQuery<Sneaker[], unknown>(['sneakers', searchQuery, filterName], () => getSneakers(searchQuery, filterName));
+  return { ...result, count: result.data?.length }
 };
 
 export const useCreateSneaker = () => {
@@ -98,7 +97,6 @@ export const useCreateSneaker = () => {
 
   return useMutation<void, unknown, Sneaker>(createSneaker, {
     onSuccess: () => {
-      console.log('invalidateQueries: ', data);
       queryClient.invalidateQueries('sneakers');
     },
   });

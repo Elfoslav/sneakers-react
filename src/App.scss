@@ -86,3 +86,12 @@ h1, h2 {
 .text-sm {
   font-size: 0.8em;
 }
+
+/* Visibility styles */
+.d-none {
+  display: none;
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
