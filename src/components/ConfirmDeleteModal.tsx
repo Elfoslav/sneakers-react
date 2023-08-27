@@ -21,9 +21,9 @@ const ConfirmDeleteModal: React.FC<ModalProps> = ({ headerText, isOpen, onClose,
         {children}
       </div>
 
-      <div className="footer-buttons">
+      <div className="footer-buttons flex gap-10 mt-20">
         <Button text="Confirm" onClick={onSubmit} />
-        <Button text="Cancel" onClick={onClose} />
+        <Button text="Cancel" onClick={onClose} outline />
       </div>
     </Modal>
   );
