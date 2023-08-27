@@ -9,7 +9,11 @@ import Button from '../Button';
 
 interface FormValues extends Omit<Sneaker, 'id'> {}
 
-function SneakersForm() {
+interface SneakersFormProps {
+  onSubmit: SubmitHandler<FormValues>;
+}
+
+function SneakersForm({ onSubmit }: SneakersFormProps) {
   const createSneakerMutation = useCreateSneaker();
   const updateSneakerMutation = useUpdateSneaker();
   const { selectedSneaker } = useSneakerContext();
@@ -20,7 +24,7 @@ function SneakersForm() {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = async (formData) => {
+  const localSubmit: SubmitHandler<FormValues> = async (formData) => {
     const newSneaker: Sneaker = {
       id: selectedSneaker ? selectedSneaker.id : uuidv4(),
       ...formData,
@@ -39,11 +43,12 @@ function SneakersForm() {
     }
     console.log(newSneaker)
     reset();
+    onSubmit(formData);
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(localSubmit)}
       className={`form-container ${Object.keys(errors).length ? 'invalid' : ''}`}
     >
       <div className="form-group">

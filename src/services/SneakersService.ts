@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import Sneaker from '../models/Sneaker';
+import { FILTERS } from '../lib/consts';
 
 const API_URL = 'https://crudcrud.com/api/1a35ec1ba4f84eabb9866ce5cfd8b9e4/sneakers';
 
@@ -39,15 +40,29 @@ const data: Sneaker[] = [
   },
 ];
 
-export const getSneakers = async (query: string = ''): Promise<Sneaker[]> => {
+export const getSneakers = async (query: string = '', filterName: string = ''): Promise<Sneaker[]> => {
   // const response = await axios.get<Sneaker[]>(API_URL);
   // return response.data;
-  console.log('getSneakers: ', data, query);
+  console.log('getSneakers: ', data, query, filterName);
   let filteredSneakers = data;
 
   if (query) {
     filteredSneakers = data.filter(sneaker => sneaker.name.toLowerCase().includes(query.toLowerCase()));
   }
+
+  if (filterName === FILTERS.OLDEST) {
+    filteredSneakers = filteredSneakers.sort((a, b) => a.year - b.year);
+  }
+
+  if (filterName === FILTERS.SMALLEST) {
+    filteredSneakers = filteredSneakers.sort((a, b) => a.size - b.size);
+  }
+
+  if (filterName === FILTERS.CHEAPEST) {
+    filteredSneakers = filteredSneakers.sort((a, b) => a.price - b.price);
+  }
+
+  console.log(filteredSneakers)
 
   return Promise.resolve(filteredSneakers);
 };
@@ -73,9 +88,9 @@ export const deleteSneaker = async (sneakerId: string): Promise<void> => {
   }
 };
 
-export const useGetSneakers = (searchQuery: string = '') => {
-  console.log('useGetSneakers: ', data, searchQuery);
-  return useQuery<Sneaker[], unknown>(['sneakers', searchQuery], () => getSneakers(searchQuery));
+export const useGetSneakers = (searchQuery: string = '', filterName: string = '') => {
+  console.log('useGetSneakers: ', data, searchQuery, filterName);
+  return useQuery<Sneaker[], unknown>(['sneakers', searchQuery, filterName], () => getSneakers(searchQuery, filterName));
 };
 
 export const useCreateSneaker = () => {

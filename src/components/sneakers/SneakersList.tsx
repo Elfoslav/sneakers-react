@@ -5,8 +5,8 @@ import  './SneakersList.scss';
 import Sneaker from '../../models/Sneaker';
 
 function SneakersList() {
-  const { searchText, selectSneaker, openFormModal, openDeleteModal } = useSneakerContext();
-  const { data, isLoading, isError } = useGetSneakers(searchText);
+  const { searchText, filterName, selectSneaker, openFormModal, openDeleteModal } = useSneakerContext();
+  const { data, isLoading, isError } = useGetSneakers(searchText, filterName);
 
   if (isLoading) {
     return <div>Loading...</div>;

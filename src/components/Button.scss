@@ -1,3 +1,12 @@
+@mixin white-text {
+  color: white;
+  .btn-icon {
+    img {
+      filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7496%) hue-rotate(341deg) brightness(99%) contrast(103%);
+    }
+  }
+}
+
 .btn {
     display: flex;
     align-items: center;
@@ -13,8 +22,33 @@
         background-color: #3a3939;
       }
     }
+    &.btn-sm {
+      padding: 4px 12px;
+    }
+    &.btn-outline {
+      background-color: transparent;
+      color: #191919;
+      border: 1px solid #191919;
+      .btn-icon {
+        img {
+          filter: brightness(0) saturate(100%) invert(6%) sepia(17%) saturate(0%) hue-rotate(1deg) brightness(99%) contrast(93%);
+        }
+      }
+      &:hover {
+        @include white-text;
+      }
+    }
+    &.btn-active {
+      background-color: #EF233C;
+      border-color: #EF233C;
+      color: white;
+      @include white-text;
+      &:hover {
+        border-color: #3a3939;
+      }
+    }
     .btn-icon {
-      font-size: 1.8em;
+      font-size: 1.2em;
       margin-right: 8px;
       img {
         filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7496%) hue-rotate(341deg) brightness(99%) contrast(103%);
