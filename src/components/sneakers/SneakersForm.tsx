@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { useCreateSneaker, useUpdateSneaker } from '../../services/SneakersService';
@@ -21,8 +21,27 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
     handleSubmit,
     register,
     reset,
+    setValue,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      name: selectedSneaker?.name || '',
+      brand: selectedSneaker?.brand || '',
+      price: selectedSneaker?.price || 0,
+      size: selectedSneaker?.size || 0,
+      year: selectedSneaker?.year || 0,
+    }
+  });
+
+  useEffect(() => {
+    if (selectedSneaker) {
+      setValue('name', selectedSneaker.name || '');
+      setValue('brand', selectedSneaker.brand || '');
+      setValue('price', selectedSneaker.price || 0);
+      setValue('size', selectedSneaker.size || 0);
+      setValue('year', selectedSneaker.year || 0);
+    }
+  }, [selectedSneaker, setValue]);
 
   const localSubmit: SubmitHandler<FormValues> = async (formData) => {
     const newSneaker: Sneaker = {
@@ -56,7 +75,6 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         <input
           type="text"
           id="name"
-          defaultValue={selectedSneaker?.name || ''}
           {...register('name', { required: 'Name is required' })}
         />
         {errors.name && <div className="error">{errors.name.message}</div>}
@@ -66,7 +84,6 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         <input
           type="text"
           id="brand"
-          defaultValue={selectedSneaker?.brand || ''}
           {...register('brand', { required: 'Brand is required' })}
         />
         {errors.brand && <div className="error">{errors.brand.message}</div>}
@@ -76,7 +93,6 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         <input
           type="number"
           id="price"
-          defaultValue={selectedSneaker?.price || ''}
           {...register('price', { required: 'Price is required' })}
         />
         {errors.price && <div className="error">{errors.price.message}</div>}
@@ -86,7 +102,6 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         <input
           type="number"
           id="size"
-          defaultValue={selectedSneaker?.size || ''}
           {...register('size', { required: 'Size is required' })}
         />
         {errors.size && <div className="error">{errors.size.message}</div>}
@@ -96,7 +111,6 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         <input
           type="number"
           id="year"
-          defaultValue={selectedSneaker?.year || ''}
           {...register('year', { required: 'Year is required' })}
         />
         {errors.year && <div className="error">{errors.year.message}</div>}
