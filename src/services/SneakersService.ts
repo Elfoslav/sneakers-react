@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import Sneaker from '../models/Sneaker';
+import SneakersStore from './SneakersStore';
 import { FILTERS } from '../lib/consts';
 
+const sneakersStore = new SneakersStore();
 const API_URL = 'https://crudcrud.com/api/1a35ec1ba4f84eabb9866ce5cfd8b9e4/sneakers';
 
 // const data: Sneaker[] = [
@@ -39,11 +41,12 @@ const API_URL = 'https://crudcrud.com/api/1a35ec1ba4f84eabb9866ce5cfd8b9e4/sneak
 //     year: 2021,
 //   },
 // ];
-const data: Sneaker[] = [];
 
 export const getSneakers = async (query: string = '', filterName: string = ''): Promise<Sneaker[]> => {
   // const response = await axios.get<Sneaker[]>(API_URL);
   // return response.data;
+  const data: Sneaker[] = sneakersStore.read();
+
   console.log('getSneakers: ', data, query, filterName);
   let filteredSneakers = data;
 
@@ -68,23 +71,18 @@ export const getSneakers = async (query: string = '', filterName: string = ''): 
 
 export const createSneaker = async (newSneaker: Sneaker): Promise<void> => {
   // await axios.post(API_URL, newSneaker);
-  data.push(newSneaker);
+  // data.push(newSneaker);
+  sneakersStore.create(newSneaker);
 };
 
 export const updateSneaker = async (updatedSneaker: Sneaker): Promise<void> => {
   // await axios.put(`${API_URL}/${updatedSneaker.id}`, updatedSneaker);
-  const index = data.findIndex(sneaker => sneaker.id === updatedSneaker.id);
-  if (index !== -1) {
-    data[index] = updatedSneaker;
-  }
+  sneakersStore.update(updatedSneaker.id, updatedSneaker);
 };
 
 export const deleteSneaker = async (sneakerId: string): Promise<void> => {
   // await axios.delete(`${API_URL}/${sneakerId}`);
-  const index = data.findIndex(sneaker => sneaker.id === sneakerId);
-  if (index !== -1) {
-    data.splice(index, 1);
-  }
+  sneakersStore.delete(sneakerId);
 };
 
 export const useGetSneakers = (searchQuery: string = '', filterName: string = '') => {
