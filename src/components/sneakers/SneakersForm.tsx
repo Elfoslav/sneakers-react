@@ -139,12 +139,15 @@ function SneakersForm({ onSubmit }: SneakersFormProps) {
         />
         {errors.year && <div className="error">{errors.year.message}</div>}
       </div>
-      {selectedSneaker ? (
-        <Button type="submit" text="Save" />
-      ) : (
-        // Render this button if selectedSneaker is falsy
-        <Button type="submit" iconText="+" text="Add new sneakers" />
-      )}
+
+      <div className="buttons">
+        {selectedSneaker ? (
+          <Button type="submit" text="Save" />
+        ) : (
+          // Render this button if selectedSneaker is falsy
+          <Button type="submit" iconText="+" text="Add new sneakers" />
+        )}
+      </div>
     </form>
   );
 }
